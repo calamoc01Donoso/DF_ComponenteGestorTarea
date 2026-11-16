@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<BorderPane prefHeight="600.0" prefWidth="950.0"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.Controller">
+<BorderPane prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controller">
 
    <!-- ZONA SUPERIOR: HBox + Label + ProgressBar + ChoiceBox -->
    <top>
       <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #2c3e50; -fx-padding: 12;">
-         <Label text="Gestor de Tareas Grupo 1" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
+         <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Gestor de Tareas Grupo 1" />
          <Region HBox.hgrow="ALWAYS" />
-         <Label text="Filtrar estado:" style="-fx-text-fill: white;" />
+         <Label style="-fx-text-fill: white;" text="Filtrar estado:" />
          <ChoiceBox fx:id="cbFiltroEstado" prefWidth="130.0" />
-         <Label text="Progreso global:" style="-fx-text-fill: white;" />
+         <Label style="-fx-text-fill: white;" text="Progreso global:" />
          <ProgressBar fx:id="pbProgresoGlobal" prefWidth="150.0" progress="0.0" />
-         <Label fx:id="lblPorcentaje" text="0%" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+         <Label fx:id="lblPorcentaje" style="-fx-text-fill: white; -fx-font-weight: bold;" text="0%" />
       </HBox>
    </top>
 
    <!-- ZONA CENTRAL: TableView + formulario -->
    <center>
       <VBox spacing="10.0">
-         <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+         <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
 
          <TableView fx:id="tablaTareas" VBox.vgrow="ALWAYS">
             <columns>
-               <TableColumn fx:id="colTitulo" prefWidth="200.0" text="Tarea" />
-               <TableColumn fx:id="colEstado" prefWidth="110.0" text="Estado" />
-               <TableColumn fx:id="colColor" prefWidth="90.0" text="Color" />
+               <TableColumn fx:id="colTitulo" prefWidth="282.0" text="Tarea" />
+               <TableColumn fx:id="colEstado" prefWidth="142.0" text="Estado" />
+               <TableColumn fx:id="colColor" prefWidth="105.0" text="Color" />
             </columns>
             <placeholder>
                <Label text="No hay tareas que mostrar" />
             </placeholder>
          </TableView>
 
-         <HBox spacing="10.0" alignment="CENTER_LEFT">
-            <TextField fx:id="txtNuevaTarea" promptText="Nombre de nueva tarea..." HBox.hgrow="ALWAYS" onAction="#agregarTarea" />
-            <ChoiceBox fx:id="cbEstadoTarea" prefWidth="120.0" minWidth="-Infinity" />
+         <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <TextField fx:id="txtNuevaTarea" onAction="#agregarTarea" promptText="Nombre de nueva tarea..." HBox.hgrow="ALWAYS" />
+            <ChoiceBox fx:id="cbEstadoTarea" minWidth="-Infinity" prefWidth="120.0" />
             <ColorPicker fx:id="cpColorTarea" minWidth="-Infinity" />
-            <Button fx:id="btnAgregar" text="Añadir" onAction="#agregarTarea" minWidth="-Infinity" />
+            <Button fx:id="btnAgregar" minWidth="-Infinity" onAction="#agregarTarea" text="Añadir" />
          </HBox>
       </VBox>
    </center>
@@ -51,25 +60,22 @@
    <!-- ZONA DERECHA: Estado + Eliminar + TextArea + StackPane + WebView -->
    <right>
       <VBox prefWidth="400.0" spacing="10.0" style="-fx-border-color: #bdc3c7; -fx-border-width: 0 0 0 1;">
-         <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+         <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
 
-         <HBox spacing="10.0" alignment="CENTER_LEFT">
-            <Label text="Estado:" style="-fx-font-weight: bold;" minWidth="-Infinity" />
-            <ChoiceBox fx:id="cbCambiarEstado" prefWidth="130.0" minWidth="-Infinity" />
+         <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Label minWidth="-Infinity" style="-fx-font-weight: bold;" text="Estado:" />
+            <ChoiceBox fx:id="cbCambiarEstado" minWidth="-Infinity" prefWidth="130.0" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnEliminar" text="Eliminar" onAction="#eliminarTarea" minWidth="-Infinity"
-                    style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <Button fx:id="btnEliminar" minWidth="-Infinity" onAction="#eliminarTarea" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar" />
          </HBox>
 
-         <Label text="Notas de la tarea (soporta HTML):" style="-fx-font-weight: bold;" />
-         <TextArea fx:id="txtNotas" prefHeight="180.0" wrapText="true"
-                   promptText="Escribe aquí tus notas o etiquetas HTML como &lt;b&gt;Importante&lt;/b&gt;..." />
+         <Label style="-fx-font-weight: bold;" text="Notas de la tarea (soporta HTML):" />
+         <TextArea fx:id="txtNotas" prefHeight="180.0" promptText="Escribe aquí tus notas o etiquetas HTML como &lt;b&gt;Importante&lt;/b&gt;..." wrapText="true" />
 
-         <Label text="Vista previa enriquecida (WebView):" style="-fx-font-weight: bold;" />
-         <StackPane fx:id="stackVistaPrevia" VBox.vgrow="ALWAYS" style="-fx-border-color: #95a5a6;">
+         <Label style="-fx-font-weight: bold;" text="Vista previa enriquecida (WebView):" />
+         <StackPane fx:id="stackVistaPrevia" style="-fx-border-color: #95a5a6;" VBox.vgrow="ALWAYS">
             <WebView fx:id="webVistaPrevia" />
-            <Label fx:id="lblPlaceholderWeb" text="Selecciona una tarea para ver su ficha"
-                   style="-fx-background-color: #ecf0f1; -fx-padding: 10;" />
+            <Label fx:id="lblPlaceholderWeb" style="-fx-background-color: #ecf0f1; -fx-padding: 10;" text="Selecciona una tarea para ver su ficha" />
          </StackPane>
       </VBox>
    </right>
