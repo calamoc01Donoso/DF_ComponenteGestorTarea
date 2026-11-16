@@ -37,11 +37,12 @@
             <placeholder>
                <Label text="No hay tareas que mostrar" />
             </placeholder>
+            <tooltip>
+               <Tooltip text="Haz clic en una tarea para ver su ficha y cambiar su estado" showDelay="300ms" />
+            </tooltip>
          </TableView>
 
          <HBox spacing="10.0" alignment="CENTER_LEFT">
-            <Label text="Estado de la tarea:" style="-fx-font-weight: bold;" />
-            <ChoiceBox fx:id="cbCambiarEstado" prefWidth="130.0" />
             <TextField fx:id="txtNuevaTarea" promptText="Nombre de nueva tarea..." HBox.hgrow="ALWAYS" onAction="#agregarTarea" />
             <ChoiceBox fx:id="cbEstadoTarea" prefWidth="120.0" />
             <ColorPicker fx:id="cpColorTarea" />
@@ -55,6 +56,11 @@
       <VBox prefWidth="400.0" spacing="10.0" style="-fx-border-color: #bdc3c7; -fx-border-width: 0 0 0 1;">
          <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
+         <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <Label text="Estado de la tarea:" style="-fx-font-weight: bold;" />
+            <ChoiceBox fx:id="cbCambiarEstado" prefWidth="130.0" />
+         </HBox>
+
          <Label text="Notas de la tarea (soporta HTML):" style="-fx-font-weight: bold;" />
          <TextArea fx:id="txtNotas" prefHeight="180.0" wrapText="true"
                    promptText="Escribe aquí tus notas o etiquetas HTML como &lt;b&gt;Importante&lt;/b&gt;..." />
@@ -64,6 +70,11 @@
             <WebView fx:id="webVistaPrevia" />
             <Label fx:id="lblPlaceholderWeb" text="Selecciona una tarea para ver su ficha"
                    style="-fx-background-color: #ecf0f1; -fx-padding: 10;" />
+            <Label fx:id="lblSello" visible="false" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets top="10" right="10" />
+               </StackPane.margin>
+            </Label>
          </StackPane>
       </VBox>
    </right>

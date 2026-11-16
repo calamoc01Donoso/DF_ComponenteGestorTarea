@@ -27,7 +27,6 @@ public class Controller {
     @FXML private ColorPicker cpColorTarea;
     @FXML private Button btnAgregar;
     @FXML private TextArea txtNotas;
-    @FXML private StackPane stackVistaPrevia;
     @FXML private WebView webVistaPrevia;
 
     private final ObservableList<Tarea> listaTareas = FXCollections.observableArrayList();
