@@ -26,6 +26,7 @@ public class Controller {
     @FXML private TextField txtNuevaTarea;
     @FXML private ColorPicker cpColorTarea;
     @FXML private Button btnAgregar;
+    @FXML private Button btnEliminar;
     @FXML private TextArea txtNotas;
     @FXML private WebView webVistaPrevia;
 
@@ -41,15 +42,16 @@ public class Controller {
         cbFiltroEstado.getItems().addAll("Todas", "Pendiente", "En progreso", "Completada");
         cbFiltroEstado.setValue("Todas");
 
-        // ChoiceBox para cambiar el estado: desactivado hasta que se seleccione una tarea
         cbCambiarEstado.getItems().addAll("Pendiente", "En progreso", "Completada");
-        cbCambiarEstado.setDisable(true);
+
+        // Eliminar y cambiar estado solo se activan si hay una tarea seleccionada
+        btnEliminar.disableProperty().bind(tablaTareas.getSelectionModel().selectedItemProperty().isNull());
+        cbCambiarEstado.disableProperty().bind(tablaTareas.getSelectionModel().selectedItemProperty().isNull());
 
         // 2. Tooltips
         cpColorTarea.setTooltip(new Tooltip("Selecciona un color identificativo para la tarea"));
         btnAgregar.setTooltip(new Tooltip("Añade la tarea a la tabla superior"));
         pbProgresoGlobal.setTooltip(new Tooltip("Porcentaje de tareas completadas"));
-        cbCambiarEstado.setTooltip(new Tooltip("Cambia el estado de la tarea seleccionada"));
 
         // 3. Columnas de la tabla
         colTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
@@ -86,33 +88,31 @@ public class Controller {
         cbFiltroEstado.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
                 aplicarFiltro());
 
-        // 4. Selección en la tabla -> actualiza TextArea, WebView, placeholder y ChoiceBox de estado
+        // 4. Selección en la tabla -> actualiza TextArea, WebView, placeholder y estado
         tablaTareas.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, nuevaSel) -> {
             if (nuevaSel != null) {
                 lblPlaceholderWeb.setVisible(false);
                 txtNotas.setText(nuevaSel.getNotas());
-                cbCambiarEstado.setDisable(false);
-                cbCambiarEstado.setValue(nuevaSel.getEstado()); // muestra el estado actual
+                cbCambiarEstado.setValue(nuevaSel.getEstado());
                 actualizarWebView(nuevaSel);
             } else {
                 lblPlaceholderWeb.setVisible(true);
                 txtNotas.clear();
                 cbCambiarEstado.setValue(null);
-                cbCambiarEstado.setDisable(true);
                 webVistaPrevia.getEngine().loadContent("");
             }
         });
 
-        // 5. Cambio de estado de la tarea seleccionada
+        // 5. Cambiar el estado de la tarea seleccionada
         cbCambiarEstado.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, nuevoEstado) -> {
             Tarea seleccionada = tablaTareas.getSelectionModel().getSelectedItem();
-            // Solo actúa si hay tarea y el estado es distinto (evita reaccionar al cargar la selección)
+            // Solo actúa si el estado es distinto (evita reaccionar al seleccionar una tarea)
             if (seleccionada != null && nuevoEstado != null && !nuevoEstado.equals(seleccionada.getEstado())) {
                 seleccionada.setEstado(nuevoEstado);
-                tablaTareas.refresh();          // repinta la columna Estado
-                actualizarProgreso();           // recalcula la ProgressBar
-                actualizarWebView(seleccionada); // actualiza la ficha
-                aplicarFiltro();                // si ya no cumple el filtro, desaparece de la tabla
+                tablaTareas.refresh();           // repinta la columna Estado
+                actualizarProgreso();
+                actualizarWebView(seleccionada);
+                aplicarFiltro();                 // si ya no cumple el filtro, desaparece de la tabla
             }
         });
 
@@ -152,11 +152,17 @@ public class Controller {
         actualizarProgreso();
     }
 
-    /**
-     * Vuelve a aplicar el filtro del ChoiceBox superior.
-     * Se crea un predicado nuevo para que la FilteredList reevalúe todas las tareas
-     * (no se entera sola de que ha cambiado el estado de una tarea).
-     */
+    // Elimina la tarea seleccionada en la tabla
+    @FXML
+    private void eliminarTarea() {
+        Tarea seleccionada = tablaTareas.getSelectionModel().getSelectedItem();
+        if (seleccionada != null) {
+            listaTareas.remove(seleccionada);
+            actualizarProgreso();
+        }
+    }
+
+    // Vuelve a aplicar el filtro (la FilteredList no detecta sola que cambia el estado)
     private void aplicarFiltro() {
         String filtro = cbFiltroEstado.getValue();
         tareasFiltradas.setPredicate(tarea ->
