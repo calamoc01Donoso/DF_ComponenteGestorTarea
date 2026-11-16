@@ -8,7 +8,7 @@
 <BorderPane prefHeight="600.0" prefWidth="950.0"
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.MainController">
+            fx:controller="org.example.Controller">
 
    <!-- ZONA SUPERIOR: HBox + Label + ProgressBar + ChoiceBox -->
    <top>
