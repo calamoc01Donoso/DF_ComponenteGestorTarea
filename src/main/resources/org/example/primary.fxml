@@ -40,6 +40,8 @@
          </TableView>
 
          <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <Label text="Estado de la tarea:" style="-fx-font-weight: bold;" />
+            <ChoiceBox fx:id="cbCambiarEstado" prefWidth="130.0" />
             <TextField fx:id="txtNuevaTarea" promptText="Nombre de nueva tarea..." HBox.hgrow="ALWAYS" onAction="#agregarTarea" />
             <ChoiceBox fx:id="cbEstadoTarea" prefWidth="120.0" />
             <ColorPicker fx:id="cpColorTarea" />
