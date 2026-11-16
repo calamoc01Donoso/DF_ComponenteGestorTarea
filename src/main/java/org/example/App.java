@@ -14,7 +14,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("primary.fxml"));
         Parent root = loader.load();
-
+        stage.setResizable(false);
         stage.setTitle("Gestor de Tareas - Grupo 1");
         stage.setScene(new Scene(root, 950, 600));
         stage.show();
