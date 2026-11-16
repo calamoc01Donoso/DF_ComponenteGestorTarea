@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+
+<BorderPane prefHeight="600.0" prefWidth="950.0"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.MainController">
+
+   <!-- ZONA SUPERIOR: HBox + Label + ProgressBar + ChoiceBox -->
+   <top>
+      <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #2c3e50; -fx-padding: 12;">
+         <Label text="Gestor de Tareas Grupo 1" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
+         <Region HBox.hgrow="ALWAYS" />
+         <Label text="Filtrar estado:" style="-fx-text-fill: white;" />
+         <ChoiceBox fx:id="cbFiltroEstado" prefWidth="130.0" />
+         <Label text="Progreso global:" style="-fx-text-fill: white;" />
+         <ProgressBar fx:id="pbProgresoGlobal" prefWidth="150.0" progress="0.0" />
+         <Label fx:id="lblPorcentaje" text="0%" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+      </HBox>
+   </top>
+
+   <!-- ZONA CENTRAL: TableView + formulario -->
+   <center>
+      <VBox spacing="10.0">
+         <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+         <TableView fx:id="tablaTareas" VBox.vgrow="ALWAYS">
+            <columns>
+               <TableColumn fx:id="colTitulo" prefWidth="200.0" text="Tarea" />
+               <TableColumn fx:id="colEstado" prefWidth="110.0" text="Estado" />
+               <TableColumn fx:id="colColor" prefWidth="90.0" text="Color" />
+            </columns>
+            <placeholder>
+               <Label text="No hay tareas que mostrar" />
+            </placeholder>
+         </TableView>
+
+         <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <TextField fx:id="txtNuevaTarea" promptText="Nombre de nueva tarea..." HBox.hgrow="ALWAYS" onAction="#agregarTarea" />
+            <ChoiceBox fx:id="cbEstadoTarea" prefWidth="120.0" />
+            <ColorPicker fx:id="cpColorTarea" />
+            <Button fx:id="btnAgregar" text="Añadir" onAction="#agregarTarea" />
+         </HBox>
+      </VBox>
+   </center>
+
+   <!-- ZONA DERECHA: TextArea + StackPane + WebView -->
+   <right>
+      <VBox prefWidth="400.0" spacing="10.0" style="-fx-border-color: #bdc3c7; -fx-border-width: 0 0 0 1;">
+         <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+         <Label text="Notas de la tarea (soporta HTML):" style="-fx-font-weight: bold;" />
+         <TextArea fx:id="txtNotas" prefHeight="180.0" wrapText="true"
+                   promptText="Escribe aquí tus notas o etiquetas HTML como &lt;b&gt;Importante&lt;/b&gt;..." />
+
+         <Label text="Vista previa enriquecida (WebView):" style="-fx-font-weight: bold;" />
+         <StackPane fx:id="stackVistaPrevia" VBox.vgrow="ALWAYS" style="-fx-border-color: #95a5a6;">
+            <WebView fx:id="webVistaPrevia" />
+            <Label fx:id="lblPlaceholderWeb" text="Selecciona una tarea para ver su ficha"
+                   style="-fx-background-color: #ecf0f1; -fx-padding: 10;" />
+         </StackPane>
+      </VBox>
+   </right>
+</BorderPane>
