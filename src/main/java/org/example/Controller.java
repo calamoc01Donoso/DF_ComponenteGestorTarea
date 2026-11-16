@@ -84,6 +84,17 @@ public class Controller {
         tareasFiltradas = new FilteredList<>(listaTareas, t -> true);
         tablaTareas.setItems(tareasFiltradas);
 
+        // Si se pulsa en una fila vacía de la tabla, se quita la selección
+        tablaTareas.setRowFactory(tv -> {
+            TableRow<Tarea> fila = new TableRow<>();
+            fila.setOnMouseClicked(e -> {
+                if (fila.isEmpty()) {
+                    tablaTareas.getSelectionModel().clearSelection();
+                }
+            });
+            return fila;
+        });
+
         // Filtrado con el ChoiceBox
         cbFiltroEstado.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
                 aplicarFiltro());
